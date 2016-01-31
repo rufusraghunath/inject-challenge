@@ -7,15 +7,15 @@ describe Array do
   context 'simple math' do
 
     it 'addition' do
-      expect(array.injekt(&:+)).to eq array.inject(:+)
+      expect(array.injekt(:+)).to eq array.inject(:+)
     end
 
     it 'subtraction' do
-      expect(array.injekt(&:-)).to eq array.inject(:-)
+      expect(array.injekt(:-)).to eq array.inject(:-)
     end
 
     it 'multiplication' do
-      expect(array.injekt(&:*)).to eq array.inject(:*)
+      expect(array.injekt(:*)).to eq array.inject(:*)
     end
 
     it 'division' do
@@ -34,7 +34,7 @@ describe Array do
 
   context 'memo variability' do
     it 'it works for non-default values of memo' do
-      expect(array.injekt(4, &:+)).to eq array.inject(4, :+)
+      expect(array.injekt(4, :+)).to eq array.inject(4, :+)
     end
   end
 
