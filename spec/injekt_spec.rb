@@ -27,7 +27,7 @@ describe Array do
   context 'complex operations' do
 
     it 'handles more complex operations' do
-      expect(array.injekt(array) {|memo, i| ((memo + 50)-(i^32))}).to eq array.inject {|memo, i| ((memo + 50)-(i^32))}
+      expect(array.injekt(array) {|memo, i| ((memo + 50)-(i**32))/10}).to eq array.inject {|memo, i| ((memo + 50)-(i**32))/10}
     end
 
   end
