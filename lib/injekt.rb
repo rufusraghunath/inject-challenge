@@ -10,6 +10,7 @@ class Array
     fail "Too many arguments!" unless args[2].nil?
 
     if block_given?
+      fail "Too many arguments!" unless args[1].nil?
       if memo == self[0]
         self.each do |i|
           next if i == self[0]
