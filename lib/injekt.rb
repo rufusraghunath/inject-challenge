@@ -1,8 +1,8 @@
 class Array
 
-  def injekt array, memo=array[0]
-    array.each do |i|
-      next if i == array[0]
+  def injekt memo=self[0], &block
+    self.each do |i|
+      next if i == self[0]
       memo = yield memo, i
     end
     memo
