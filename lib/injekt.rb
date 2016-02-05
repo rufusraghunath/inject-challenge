@@ -2,57 +2,35 @@ class Array
 
   def injekt *args
 
-    if args.first.is_a? Integer
-      memo=args.first
+    # This is a refactor of how I previously wrote this method.
+    # It is an ongoing experiment in readability.
+
+    block_given = block_given?
+    first_int = args.first.is_a? Integer
+    first_sym = args.first.is_a? Symbol
+    sec_sym = args[1].is_a? Symbol
+    too_many_args = lambda{raise ArgumentError.new("Too many arguments")}
+    arg_invalid = lambda{raise ArgumentError.new("Invalid arguments")}
+
+    first_int ? (memo = args.first; memo_given = true) : memo = self[0]
+    too_many_args.call unless args[2].nil?
+
+    if block_given
+      too_many_args.call unless args[1].nil?
     else
-      memo=self[0]
+      if first_int
+        sec_sym ? sym = args[1] : arg_invalid.call
+      else
+        first_sym && args[1].nil? ? sym = args.first : arg_invalid.call
+      end
     end
-    fail "Too many arguments!" unless args[2].nil?
 
-    if block_given?
-      fail "Too many arguments!" unless args[1].nil?
-      if memo == self[0]
-        self.each do |i|
-          next if i == self[0]
-          memo = yield memo, i
-        end
-      else
-        self.each do |i|
-          memo = yield memo, i
-        end
-      end
-      return memo
-
-    else # if no block
-
-      error = "Invalid argument!"
-
-      if args.first.is_a? Integer
-        if args[1].is_a? Symbol
-          sym=args[1]
-        else
-          fail error
-        end
-      else
-        if args.first.is_a? Symbol
-          sym=args.first
-        else
-          fail error
-        end
-      end
-
-      if memo == self[0]
-        self.each do |i|
-          next if i == self[0]
-          memo = memo.send(sym, i)
-        end
-      else
-        self.each do |i|
-          memo = memo.send(sym, i)
-        end
-      end
-      return memo
+    self.each.with_index do |i, ind|
+      next if ind == 0 && !memo_given
+      block_given ? memo = yield(memo, i) : memo = memo.send(sym, i)
     end
+
+    memo
+
   end
-
 end

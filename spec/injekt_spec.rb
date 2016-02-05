@@ -38,4 +38,24 @@ describe Array do
     end
   end
 
+  context 'error raising' do
+
+    it 'raises error when too many arguments given' do
+      expect{array.injekt(4, 2, :+)}.to raise_error ArgumentError
+    end
+
+    it 'raises error when too many arguments given with block' do
+      expect{array.injekt(4, 2, &:+)}.to raise_error ArgumentError
+    end
+
+    it 'raises error when invalid arguments are given' do
+      expect{array.injekt("I am invalid")}.to raise_error ArgumentError
+    end
+
+    it 'raises error when arg order is invalid' do
+      expect{array.injekt(:+, 2)}.to raise_error ArgumentError
+    end
+
+  end
+
 end
